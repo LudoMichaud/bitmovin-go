@@ -188,16 +188,16 @@ func main() {
 
 	manifestOutput := models.Output{
 		OutputID:   s3OutputResp.Data.Result.ID,
-		OutputPath: stringToPtr("golang_hls_test/manifest"),
+		OutputPath: stringToPtr("golang_smooth_test/manifest"),
 		ACL:        acl,
 	}
-	hlsManifest := &models.HLSManifest{
+	hlsManifest := &models.smoothManifest{
 		ManifestName: stringToPtr("your_manifest_name.m3u8"),
 		Outputs:      []models.Output{manifestOutput},
 	}
-	hlsService := services.NewHLSManifestService(bitmovin)
-	hlsManifestResp, err := hlsService.Create(hlsManifest)
-	errorHandler(hlsManifestResp.Status, err)
+	hlsService := services.NewSmoothManifestService(bitmovin)
+	hlsManifestResp, err := smoothService.Create(smoothManifest)
+	errorHandler(smoothManifestResp.Status, err)
 
 	audioMediaInfo := &models.MediaInfo{
 		Type:            bitmovintypes.MediaTypeAudio,
@@ -214,7 +214,7 @@ func main() {
 		StreamID:        aacStreamResp.Data.Result.ID,
 		MuxingID:        audioMuxingResp.Data.Result.ID,
 	}
-	audioMediaInfoResp, err := hlsService.AddMediaInfo(*hlsManifestResp.Data.Result.ID, audioMediaInfo)
+	audioMediaInfoResp, err := smoothService.AddMediaInfo(*smoothManifestResp.Data.Result.ID, audioMediaInfo)
 	errorHandler(audioMediaInfoResp.Status, err)
 
 	video1080pStreamInfo := &models.StreamInfo{
@@ -225,7 +225,7 @@ func main() {
 		StreamID:    videoStream1080pResp.Data.Result.ID,
 		MuxingID:    videoMuxing1080pResp.Data.Result.ID,
 	}
-	video1080pStreamInfoResponse, err := hlsService.AddStreamInfo(*hlsManifestResp.Data.Result.ID, video1080pStreamInfo)
+	video1080pStreamInfoResponse, err := smoothService.AddStreamInfo(*smoothManifestResp.Data.Result.ID, video1080pStreamInfo)
 	errorHandler(video1080pStreamInfoResponse.Status, err)
 
 	video720pStreamInfo := &models.StreamInfo{
@@ -236,13 +236,13 @@ func main() {
 		StreamID:    videoStream720pResp.Data.Result.ID,
 		MuxingID:    videoMuxing720pResp.Data.Result.ID,
 	}
-	video720pStreamInfoResponse, err := hlsService.AddStreamInfo(*hlsManifestResp.Data.Result.ID, video720pStreamInfo)
+	video720pStreamInfoResponse, err := smoothService.AddStreamInfo(*smoothManifestResp.Data.Result.ID, video720pStreamInfo)
 	errorHandler(video720pStreamInfoResponse.Status, err)
 
 	status = ""
 	for status != "FINISHED" {
 		time.Sleep(5 * time.Second)
-		statusResp, err := hlsService.RetrieveStatus(*hlsManifestResp.Data.Result.ID)
+		statusResp, err := smoothService.RetrieveStatus(*smoothManifestResp.Data.Result.ID)
 		if err != nil {
 			fmt.Println("error in Manifest Status")
 			fmt.Println(err)
