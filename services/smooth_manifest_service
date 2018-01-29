@@ -15,7 +15,7 @@ const (
 	smoothManifestEndpoint string = "encoding/manifests/smooth"
 )
 
-func NewsmoothManifestService(bitmovin *bitmovin.Bitmovin) *smoothManifestService {
+func NewSmoothManifestService(bitmovin *bitmovin.Bitmovin) *smoothManifestService {
 	r := NewRestService(bitmovin)
 
 	return &smoothManifestService{RestService: r}
