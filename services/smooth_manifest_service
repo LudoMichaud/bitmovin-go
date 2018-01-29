@@ -7,31 +7,31 @@ import (
 	"github.com/bitmovin/bitmovin-go/models"
 )
 
-type HLSManifestService struct {
+type smoothManifestService struct {
 	RestService *RestService
 }
 
 const (
-	HLSManifestEndpoint string = "encoding/manifests/hls"
+	smoothManifestEndpoint string = "encoding/manifests/smooth"
 )
 
-func NewHLSManifestService(bitmovin *bitmovin.Bitmovin) *HLSManifestService {
+func NewsmoothManifestService(bitmovin *bitmovin.Bitmovin) *smoothManifestService {
 	r := NewRestService(bitmovin)
 
-	return &HLSManifestService{RestService: r}
+	return &smoothManifestService{RestService: r}
 }
 
-func (s *HLSManifestService) Create(a *models.HLSManifest) (*models.HLSManifestResponse, error) {
+func (s *HLSManifestService) Create(a *models.smoothManifest) (*models.smoothManifestResponse, error) {
 	b, err := json.Marshal(*a)
 	if err != nil {
 		return nil, err
 	}
 
-	o, err := s.RestService.Create(HLSManifestEndpoint, b)
+	o, err := s.RestService.Create(smoothManifestEndpoint, b)
 	if err != nil {
 		return nil, err
 	}
-	var r models.HLSManifestResponse
+	var r models.smoothManifestResponse
 	err = json.Unmarshal(o, &r)
 	if err != nil {
 		return nil, err
@@ -39,13 +39,13 @@ func (s *HLSManifestService) Create(a *models.HLSManifest) (*models.HLSManifestR
 	return &r, nil
 }
 
-func (s *HLSManifestService) Retrieve(id string) (*models.HLSManifestResponse, error) {
-	path := HLSManifestEndpoint + "/" + id
+func (s *smoothManifestService) Retrieve(id string) (*models.smoothManifestResponse, error) {
+	path := smoothManifestEndpoint + "/" + id
 	o, err := s.RestService.Retrieve(path)
 	if err != nil {
 		return nil, err
 	}
-	var r models.HLSManifestResponse
+	var r models.smoothManifestResponse
 	err = json.Unmarshal(o, &r)
 	if err != nil {
 		return nil, err
@@ -53,13 +53,13 @@ func (s *HLSManifestService) Retrieve(id string) (*models.HLSManifestResponse, e
 	return &r, nil
 }
 
-func (s *HLSManifestService) Delete(id string) (*models.HLSManifestResponse, error) {
-	path := HLSManifestEndpoint + "/" + id
+func (s *smoothManifestService) Delete(id string) (*models.smoothManifestResponse, error) {
+	path := smoothManifestEndpoint + "/" + id
 	o, err := s.RestService.Delete(path)
 	if err != nil {
 		return nil, err
 	}
-	var r models.HLSManifestResponse
+	var r models.smoothManifestResponse
 	err = json.Unmarshal(o, &r)
 	if err != nil {
 		return nil, err
@@ -67,12 +67,12 @@ func (s *HLSManifestService) Delete(id string) (*models.HLSManifestResponse, err
 	return &r, nil
 }
 
-func (s *HLSManifestService) AddMediaInfo(manifestID string, a *models.MediaInfo) (*models.MediaInfoResponse, error) {
+func (s *smoothManifestService) AddMediaInfo(manifestID string, a *models.MediaInfo) (*models.MediaInfoResponse, error) {
 	b, err := json.Marshal(*a)
 	if err != nil {
 		return nil, err
 	}
-	path := HLSManifestEndpoint + "/" + manifestID + "/media"
+	path := smoothManifestEndpoint + "/" + manifestID + "/media"
 	o, err := s.RestService.Create(path, b)
 	if err != nil {
 		return nil, err
@@ -85,12 +85,12 @@ func (s *HLSManifestService) AddMediaInfo(manifestID string, a *models.MediaInfo
 	return &r, nil
 }
 
-func (s *HLSManifestService) AddStreamInfo(manifestID string, a *models.StreamInfo) (*models.StreamInfoResponse, error) {
+func (s *smoothManifestService) AddStreamInfo(manifestID string, a *models.StreamInfo) (*models.StreamInfoResponse, error) {
 	b, err := json.Marshal(*a)
 	if err != nil {
 		return nil, err
 	}
-	path := HLSManifestEndpoint + "/" + manifestID + "/streams"
+	path := smoothManifestEndpoint + "/" + manifestID + "/streams"
 	o, err := s.RestService.Create(path, b)
 	if err != nil {
 		return nil, err
@@ -103,8 +103,8 @@ func (s *HLSManifestService) AddStreamInfo(manifestID string, a *models.StreamIn
 	return &r, nil
 }
 
-func (s *HLSManifestService) Start(manifestID string) (*models.StartStopResponse, error) {
-	path := HLSManifestEndpoint + "/" + manifestID + "/start"
+func (s *smoothManifestService) Start(manifestID string) (*models.StartStopResponse, error) {
+	path := smoothManifestEndpoint + "/" + manifestID + "/start"
 	o, err := s.RestService.Create(path, nil)
 	if err != nil {
 		return nil, err
@@ -117,8 +117,8 @@ func (s *HLSManifestService) Start(manifestID string) (*models.StartStopResponse
 	return &r, nil
 }
 
-func (s *HLSManifestService) RetrieveStatus(manifestID string) (*models.StatusResponse, error) {
-	path := HLSManifestEndpoint + "/" + manifestID + "/status"
+func (s *smoothManifestService) RetrieveStatus(manifestID string) (*models.StatusResponse, error) {
+	path := smoothManifestEndpoint + "/" + manifestID + "/status"
 	o, err := s.RestService.Retrieve(path)
 	if err != nil {
 		return nil, err
