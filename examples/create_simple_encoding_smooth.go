@@ -191,12 +191,12 @@ func main() {
 		OutputPath: stringToPtr("golang_smooth_test/manifest"),
 		ACL:        acl,
 	}
-	hlsManifest := &models.smoothManifest{
+	smoothManifest := &models.smoothManifest{
 		ManifestName: stringToPtr("your_manifest_name.m3u8"),
 		Outputs:      []models.Output{manifestOutput},
 	}
-	hlsService := services.NewSmoothManifestService(bitmovin)
-	hlsManifestResp, err := smoothService.Create(smoothManifest)
+	smoothService := services.NewSmoothManifestService(bitmovin)
+	smoothManifestResp, err := smoothService.Create(smoothManifest)
 	errorHandler(smoothManifestResp.Status, err)
 
 	audioMediaInfo := &models.MediaInfo{
